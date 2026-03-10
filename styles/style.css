@@ -1,14 +1,101 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
-
-*{
-    font-family: 'Poppins','Arial';
+* {
+  font-family: "Poppins", "Arial";
 }
-body{
-    background-color: black;
+body {
+  background-color: black;
 }
 
+.navbar,
+.sidebar {
+  background-color: #1a1a1a;
+}
 
-.navbar{
-    background-color: #1A1A1A;
+.app-navbar {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.app-navbar-inner {
+  min-height: 68px;
+  padding-inline: 1rem;
+}
+
+.app-brand {
+  letter-spacing: 0.01em;
+}
+
+.app-logo {
+  width: 28px;
+  height: 28px;
+}
+
+.app-navbar-tools {
+  padding-right: 0.5rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.app-icon-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-icon-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.app-profile {
+  padding-left: 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .app-navbar-inner {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding-block: 0.6rem;
+  }
+
+  .app-navbar-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .app-navbar-tools {
+    border-right: 0;
+    padding-right: 0;
+  }
+}
+
+.sidebar {
+  width: 280px; /* Fixed width for the sidebar */
+  height: 100vh; /* Full screen height */
+  position: fixed; /* Keeps it on the left */
+  border-right: 1px solid #333;
+  padding-top: 20px;
+  background-color: #1a1a1a;
+}
+
+/* Style the links/items inside */
+.sidebar .nav-link {
+  color: #a0a0a0;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin: 2px 0;
+  transition: all 0.2s;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+.sidebar .nav-link.active {
+  background-color: #0dcaf0; /* Bootstrap Info color */
+  color: #000;
+  font-weight: 500;
 }
