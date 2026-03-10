@@ -21,7 +21,7 @@
         <a
           href="#"
           class="app-brand d-flex align-items-center gap-2 text-decoration-none">
-          <img class="app-logo" src="./resources/images/logo.svg" alt="logo" />
+          <img class="app-logo" src="/resources/images/logo.svg" alt="logo" />
           <div class="d-flex align-items-center lh-1">
             <span class="text-info fs-5 fw-bold text-decoration-none">iE</span
             ><span class="text-white fs-5 fw-bold text-decoration-none"
@@ -89,7 +89,7 @@
           class="nav-link active d-flex align-items-center gap-3 mt-3 text-info">
           <i class="bi bi-house-door"></i> Dashboard
         </a>
-        <a href="#" class="nav-link d-flex align-items-center gap-3">
+        <a href="/views/users/task_tracker.html" class="nav-link d-flex align-items-center gap-3">
           <i class="bi bi-check2-square"></i> Task Tracker
         </a>
         <a href="#" class="nav-link d-flex align-items-center gap-3">
@@ -175,10 +175,10 @@
         <h3 class="fs-2 fw-semibold mb-4">Today's Attendance</h3>
           <div class="row g-3">
           <div class="col-12 col-md-4">
-<p class="small text-secondary mb-1 d-flex align-items-center gap-2">
-  <span>Manila, Philippines</span>
+<p class="small text-secondary mb-1 d-flex align-items-center gap-2 attendance-meta">
+  <span id="location" class="attendance-location"></span>
   <span class="vr border-info opacity-75" style="height: 17px"></span>
-  <span id="day"></span>
+  <span id="day" class="attendance-day"></span>
 </p>            <p class="attendance-value mb-0"><span id="time"></span></p>
           </div>
 
