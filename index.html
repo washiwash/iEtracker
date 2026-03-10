@@ -32,7 +32,9 @@
 
         <div class="d-flex align-items-center gap-3 app-navbar-actions">
           <div class="d-flex align-items-center gap-2 app-navbar-tools">
-            <button type="button" class="btn btn-info btn-sm px-3 fw-medium text-white">
+            <button
+              type="button"
+              class="btn btn-info btn-sm px-3 fw-medium text-white">
               <i class="bi bi-plus-lg"></i> Create
             </button>
             <button
@@ -117,15 +119,49 @@
       </div>
     </aside>
 
-    <section>
-      <h1>Welcome, John Doe</h1>
-      
-      <span>Monday, March 9, 2026</span>
+    <main class="app-main">
 
-      <h4>Quick Actions</h4>
-    </section>
+      <h1 class="text-white fw-semibold mb-1">Welcome, John Doe!</h1>
+      <p class="text-secondary mb-4">Monday, March 9, 2026</p>
+      <span class="text-white">Quick Actions </span>
 
+      <section class="d-flex gap-5 justify-content-center">
 
+      <div
+        class="content-card quick-action-card d-flex align-items-center gap-3 text-light">
+        <div class="d-flex flex-column">
+          <div>
+           <i class="bi bi-plus-lg fs-4 text-info"></i>
+          <span class="fs-5 fw-semibold">Time In</span>
+          </div>
+          <span class="fs-6 text-secondary mx-4">Already clocked out</span>
+        </div>
+      </div>
+
+       <div
+        class="content-card quick-action-card d-flex align-items-center gap-3 text-light">
+        <div class="d-flex flex-column">
+          <div>
+           <i class="bi bi-plus-lg fs-4 text-info"></i>
+          <span class="fs-5 fw-semibold">Time Out</span>
+          </div>
+          <span class="fs-6 text-secondary mx-4">Already clocked out</span>
+        </div>
+      </div>
+
+      <div
+        class="content-card quick-action-card d-flex align-items-center gap-3 text-light">
+        <div class="d-flex flex-column">
+          <div>
+           <i class="bi bi-plus-lg fs-4 text-info"></i>
+          <span class="fs-5 fw-semibold">Add Task</span>
+          </div>
+          <span class="fs-6 text-secondary mx-4">Already clocked out</span>
+        </div>
+      </div>
+
+      </section>
+    </main>
 
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

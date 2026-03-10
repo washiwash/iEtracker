@@ -3,8 +3,15 @@
 * {
   font-family: "Poppins", "Arial";
 }
+
+:root {
+  --app-navbar-height: 68px;
+  --app-sidebar-width: 280px;
+}
+
 body {
   background-color: black;
+  margin: 0;
 }
 
 .navbar,
@@ -17,7 +24,7 @@ body {
 }
 
 .app-navbar-inner {
-  min-height: 68px;
+  min-height: var(--app-navbar-height);
   padding-inline: 1rem;
 }
 
@@ -53,31 +60,34 @@ body {
   padding-left: 0.25rem;
 }
 
-@media (max-width: 768px) {
-  .app-navbar-inner {
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    padding-block: 0.6rem;
-  }
-
-  .app-navbar-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .app-navbar-tools {
-    border-right: 0;
-    padding-right: 0;
-  }
-}
-
 .sidebar {
-  width: 280px; /* Fixed width for the sidebar */
-  height: 100vh; /* Full screen height */
-  position: fixed; /* Keeps it on the left */
+  width: var(--app-sidebar-width);
+  height: calc(100vh - var(--app-navbar-height));
+  position: fixed;
+  top: var(--app-navbar-height);
+  left: 0;
   border-right: 1px solid #333;
   padding-top: 20px;
   background-color: #1a1a1a;
+  overflow-y: auto;
+}
+
+.app-main {
+  margin-left: var(--app-sidebar-width);
+  padding: 1.5rem;
+}
+
+.content-card {
+  background-color: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 1.5rem;
+}
+
+.quick-action-card {
+  width: 350px;
+  min-height: 130px;
+  margin-top: 10px;
 }
 
 /* Style the links/items inside */
@@ -98,4 +108,35 @@ body {
   background-color: #0dcaf0; /* Bootstrap Info color */
   color: #000;
   font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .app-navbar-inner {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding-block: 0.6rem;
+  }
+
+  .app-navbar-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .app-navbar-tools {
+    border-right: 0;
+    padding-right: 0;
+  }
+
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-right: 0;
+    border-bottom: 1px solid #333;
+  }
+
+  .app-main {
+    margin-left: 0;
+    padding: 1rem;
+  }
 }
