@@ -7,11 +7,14 @@
 :root {
   --app-navbar-height: 68px;
   --app-sidebar-width: 280px;
+  --panel-bg: #11151d;
+  --panel-border: #1f2a38;
 }
 
 body {
-  background-color: black;
+  background-color: #04070d;
   margin: 0;
+  padding-top: var(--app-navbar-height);
 }
 
 .navbar,
@@ -20,6 +23,11 @@ body {
 }
 
 .app-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -60,12 +68,25 @@ body {
   padding-left: 0.25rem;
 }
 
+.timeOut {
+  background-color: rgba(255, 100, 103, 0.25);
+}
+
+.timeIn {
+  background-color: rgba(0, 201, 80, 0.2);
+}
+
+.addTask {
+  background-color: rgba(232, 62, 140, 0.22);
+}
+
 .sidebar {
   width: var(--app-sidebar-width);
-  height: calc(100vh - var(--app-navbar-height));
   position: fixed;
   top: var(--app-navbar-height);
+  bottom: 0;
   left: 0;
+  z-index: 1020;
   border-right: 1px solid #333;
   padding-top: 20px;
   background-color: #1a1a1a;
@@ -78,16 +99,120 @@ body {
 }
 
 .content-card {
-  background-color: #1a1a1a;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, #0d121b, #0b0f16);
+  border: 1px solid var(--panel-border);
   border-radius: 14px;
   padding: 1.5rem;
+  cursor: pointer;
 }
 
 .quick-action-card {
-  width: 350px;
+  width: 100%;
   min-height: 130px;
-  margin-top: 10px;
+  margin-top: 0;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.quick-action-card .card-body {
+  padding: 1.25rem;
+}
+
+.quick-action-card:hover {
+  border-color: #2a3f5f;
+  transform: translateY(-2px);
+}
+
+.quick-action-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon-bold {
+  -webkit-text-stroke: 0.4px currentColor;
+}
+
+.attendance-card {
+  border-color: #2b313a;
+}
+
+.attendance-value {
+  color: #f8fafc;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.task-card {
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  min-height: 120px;
+}
+
+.task-label {
+  font-size: 1.45rem;
+  line-height: 1.1;
+}
+
+.task-icon {
+  font-size: 1.05rem;
+}
+
+.task-value {
+  font-size: 2.1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.task-total {
+  background: linear-gradient(130deg, #171b24, #14171f);
+  border-color: #273242;
+  color: #d7dee8;
+}
+
+.task-completed {
+  background: linear-gradient(130deg, #032b1e, #041c14);
+  border-color: #0f714f;
+  color: #00f7ad;
+}
+
+.task-progress {
+  background: linear-gradient(130deg, #091d39, #0a172b);
+  border-color: #1d5ba5;
+  color: #5da7ff;
+}
+
+.task-pending {
+  background: linear-gradient(130deg, #2b2209, #1f1808);
+  border-color: #927311;
+  color: #ffcf2e;
+}
+
+.due-card {
+  min-height: 140px;
+}
+
+.task-pill {
+  background-color: rgba(232, 62, 140, 0.2);
+  color: #ff7eb8;
+  border: 1px solid rgba(232, 62, 140, 0.45);
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+}
+
+.task-pill-danger {
+  background-color: rgba(255, 100, 103, 0.2);
+  color: #ff8f91;
+  border-color: rgba(255, 100, 103, 0.45);
 }
 
 /* Style the links/items inside */
@@ -105,7 +230,7 @@ body {
 }
 
 .sidebar .nav-link.active {
-  background-color: #0dcaf0; /* Bootstrap Info color */
+ background-color: rgba(13, 202, 240, 0.3);
   color: #000;
   font-weight: 500;
 }
@@ -138,5 +263,17 @@ body {
   .app-main {
     margin-left: 0;
     padding: 1rem;
+  }
+
+  .quick-action-card {
+    min-height: 110px;
+  }
+
+  .task-label {
+    font-size: 1.2rem;
+  }
+
+  .task-value {
+    font-size: 1.8rem;
   }
 }
