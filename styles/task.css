@@ -166,3 +166,164 @@
     font-size: 0.82rem;
   }
 }
+
+
+
+/* BOARD STYLES */
+/* ...existing code... */
+
+:root {
+  --board-bg: #05080d;
+  --board-border: #182230;
+  --board-line: #1a2533;
+  --board-text: #eef4ff;
+  --board-muted: #8f9bad;
+  --board-chip-bg: #101826;
+}
+
+.board-view {
+  min-height: calc(100vh - var(--app-navbar-height));
+  background: var(--board-bg);
+  padding: 1.25rem 1rem 2rem;
+}
+
+.board-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.9rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 170, 0, 0.12);
+}
+
+.board-title {
+  margin: 0;
+  color: var(--board-text);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.board-search {
+  width: min(100%, 124px);
+  height: 32px;
+  background: transparent;
+  color: var(--board-text);
+  border: 1px solid #223246;
+  border-radius: 10px;
+  outline: none;
+  padding: 0 0.85rem;
+}
+
+.board-search::placeholder {
+  color: #617086;
+}
+
+.board-columns {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(210px, 1fr));
+  gap: 1.5rem;
+  align-items: start;
+  overflow-x: auto;
+}
+
+.board-column {
+  min-width: 0;
+}
+
+.board-column-header {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--board-text);
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.65rem;
+}
+
+.board-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.board-dot.todo {
+  background: #7f8796;
+}
+
+.board-dot.progress {
+  background: #3b82f6;
+}
+
+.board-dot.review {
+  background: #8b5cf6;
+}
+
+.board-dot.done {
+  background: #14d19b;
+}
+
+.board-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: var(--board-chip-bg);
+  border: 1px solid #223246;
+  color: var(--board-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.board-column-line {
+  height: 1px;
+  width: 100%;
+  background: var(--board-line);
+  margin-bottom: 1rem;
+}
+
+.board-column-body {
+  min-height: 420px;
+}
+
+.board-task {
+  background: linear-gradient(180deg, #0d121b, #0a0f16);
+  border: 1px solid var(--board-border);
+  border-radius: 12px;
+  padding: 0.9rem;
+  margin-bottom: 0.85rem;
+  color: var(--board-text);
+}
+
+.board-task-title {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.board-task-meta {
+  color: var(--board-muted);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 992px) {
+  .board-columns {
+    grid-template-columns: repeat(4, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .board-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .board-search {
+    width: 100%;
+  }
+}

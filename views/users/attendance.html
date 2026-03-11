@@ -7,7 +7,8 @@
     <link
       rel="icon"
       type="image/svg+xml"
-      href="../../resources/images/logo.png" />
+      href="../../resources/images/logo.svg" />
+    " />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -96,12 +97,12 @@
         </a>
         <a
           href="./task_tracker.html"
-          class="nav-link active d-flex align-items-center gap-3 text-info">
+          class="nav-link d-flex align-items-center gap-3">
           <i class="bi bi-check2-square"></i> Task Tracker
         </a>
         <a
           href="./attendance.html"
-          class="nav-link d-flex align-items-center gap-3">
+          class="nav-link active d-flex align-items-center gap-3 text-info">
           <i class="bi bi-person"></i> My Attendance
         </a>
         <a
@@ -137,76 +138,113 @@
       </div>
     </aside>
 
-    <main class="app-main">
-      <section class="task-list-shell">
-        <div
-          class="d-flex flex-wrap align-items-center justify-content-between gap-2 task-list-toolbar">
-          <div class="d-flex align-items-center gap-2">
+    <main class="app-main attendance-page">
+      <section class="attendance-shell">
+        <header class="attendance-topbar">
+          <h1 class="attendance-heading">My Attendance</h1>
+          <div class="attendance-month-nav">
             <button
               type="button"
-              class="btn btn-sm task-view-btn active d-inline-flex align-items-center gap-2"
-              aria-pressed="true">
-              <a
-                href="/views/users/task_tracker.html"
-                class="text-decoration-none text-reset"
-                ><i class="bi bi-list"></i> <span>List</span></a
-              >
+              class="month-arrow"
+              id="prevMonthBtn"
+              aria-label="Previous month">
+              <i class="bi bi-chevron-left"></i>
             </button>
-            <a
-              href="/views/users/board.html"
-              class="btn btn-sm task-view-btn d-inline-flex align-items-center gap-2">
-              <i class="bi bi-grid"></i>
-              <span>Board</span>
-            </a>
+            <button type="button" class="month-chip" aria-label="Current month">
+              <i class="bi bi-calendar-event"></i>
+              <span id="monthLabel">March 2026</span>
+            </button>
+            <button
+              type="button"
+              class="month-arrow"
+              id="nextMonthBtn"
+              aria-label="Next month">
+              <i class="bi bi-chevron-right"></i>
+            </button>
           </div>
+        </header>
 
-          <div class="d-flex flex-wrap align-items-center gap-2 task-stats">
-            <span class="badge text-bg-dark task-stat-pill border-blue">
-              <i class="bi bi-list-task"></i>
-              Total: 0
-            </span>
-            <span class="badge text-bg-dark task-stat-pill border-green">
-              <i class="bi bi-check-circle"></i>
-              Completed: 0
-            </span>
-            <span class="badge text-bg-dark task-stat-pill border-sky">
-              <i class="bi bi-hourglass-split"></i>
-              In Progress: 0
-            </span>
+        <div class="attendance-metrics" aria-label="Attendance summary">
+          <article class="metric-card">
+            <span class="metric-icon success"
+              ><i class="bi bi-check-circle"></i
+            ></span>
+            <div>
+              <p class="metric-label">Days Present</p>
+              <p class="metric-value">0</p>
+            </div>
+          </article>
+          <article class="metric-card">
+            <span class="metric-icon danger"
+              ><i class="bi bi-x-circle"></i
+            ></span>
+            <div>
+              <p class="metric-label">Days Absent</p>
+              <p class="metric-value">0</p>
+            </div>
+          </article>
+          <article class="metric-card">
+            <span class="metric-icon leave"
+              ><i class="bi bi-umbrella"></i
+            ></span>
+            <div>
+              <p class="metric-label">On Leave</p>
+              <p class="metric-value">0</p>
+            </div>
+          </article>
+          <article class="metric-card">
+            <span class="metric-icon trend"
+              ><i class="bi bi-graph-up-arrow"></i
+            ></span>
+            <div>
+              <p class="metric-label">Attendance Rate</p>
+              <p class="metric-value">0%</p>
+            </div>
+          </article>
+          <article class="metric-card">
+            <span class="metric-icon info"><i class="bi bi-clock"></i></span>
+            <div>
+              <p class="metric-label">Total Hours</p>
+              <p class="metric-value">0h</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="attendance-list" aria-label="Attendance entries">
+          <!--
+          Attendance rows intentionally commented out for empty-state baseline.
+          Uncomment or render these rows dynamically when API data is available.
+
+          <article class="attendance-row"> ... </article>
+          -->
+
+          <article class="attendance-empty" id="attendanceEmptyState">
+            <i class="bi bi-calendar2-x attendance-empty-icon"></i>
+            <h2 class="attendance-empty-title">No attendance records yet</h2>
+            <p class="attendance-empty-copy">
+              Your attendance entries for this month will appear here once data
+              is loaded.
+            </p>
+          </article>
+        </div>
+
+        <footer class="attendance-footer">
+          <div class="legend-wrap">
+            <span class="legend-title">Status Legend:</span>
+            <span class="legend-item"><i class="dot present"></i> Present</span>
+            <span class="legend-item"><i class="dot absent"></i> Absent</span>
+            <span class="legend-item"><i class="dot leave"></i> Leave</span>
+            <span class="legend-item"><i class="dot holiday"></i> Holiday</span>
+            <span class="legend-item"
+              ><i class="dot halfday"></i> Half Day</span
+            >
           </div>
-        </div>
-
-        <div
-          class="d-flex flex-wrap align-items-center justify-content-between gap-2 task-list-header mt-3">
-          <h6 class="mb-0 text-white fw-semibold">List View</h6>
-          <input
-            type="text"
-            class="form-control form-control-sm task-search"
-            aria-label="Search tasks" />
-        </div>
-
-        <div class="table-responsive mt-2">
-          <table class="table table-dark task-table mb-0">
-            <thead>
-              <tr>
-                <th scope="col">Task</th>
-                <th scope="col">Assignee</th>
-                <th scope="col">Due Date</th>
-                <th scope="col">Priority</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td colspan="5" class="task-empty-row"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+          <p class="current-time" id="currentTime">Current Time: --:--</p>
+        </footer>
       </section>
     </main>
 
-    <script src="scripts/script.js"></script>
+    <script src="../../scripts/attendance.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
       integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
