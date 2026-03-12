@@ -1,13 +1,20 @@
 function updateTime() {
-  const date = new Date();
-  const options = {
+  const now = new Date();
+  const timeZone = "Asia/Manila";
+  const time = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  }).format(now);
+  const day = new Intl.DateTimeFormat("en-US", {
+    timeZone,
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
-  };
-  const time = date.toLocaleTimeString();
-  const day = date.toLocaleDateString(undefined, options);
+  }).format(now);
 
   const timeElement = document.getElementById("time");
   const dayElement = document.getElementById("day");
@@ -103,6 +110,89 @@ function updateLocation() {
     },
   );
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("addModal");
+  const openButtons = document.querySelectorAll(
+    '[data-open-task-modal="true"]',
+  );
+  const closeButton = document.getElementById("closeModal");
+
+  if (!modal || openButtons.length === 0 || !closeButton) return;
+
+  const openModal = () => {
+    modal.style.opacity = "1";
+    modal.style.pointerEvents = "auto";
+  };
+
+  const closeModal = () => {
+    modal.style.opacity = "0";
+    modal.style.pointerEvents = "none";
+  };
+
+  openButtons.forEach((button) => {
+    button.addEventListener("click", openModal);
+  });
+  closeButton.addEventListener("click", closeModal);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const totalHoursElement = document.getElementById("todayTotalHours");
+
+  if (!totalHoursElement) {
+    return;
+  }
+
+  const startTimeRaw = totalHoursElement.dataset.startTime || "";
+  const endTimeRaw = totalHoursElement.dataset.endTime || "";
+  const initialSecondsRaw = totalHoursElement.dataset.totalSeconds || "0";
+  const startTime = startTimeRaw ? new Date(startTimeRaw) : null;
+  const endTime = endTimeRaw ? new Date(endTimeRaw) : null;
+  let initialSeconds = Number.parseInt(initialSecondsRaw, 10);
+
+  if (!Number.isFinite(initialSeconds) || initialSeconds < 0) {
+    initialSeconds = 0;
+  }
+
+  const formatDuration = (seconds) => {
+    const safeSeconds = Math.max(0, Math.floor(seconds));
+    const adjustedSeconds = endTime
+      ? Math.max(0, safeSeconds - 3600)
+      : safeSeconds;
+    const hours = Math.floor(adjustedSeconds / 3600);
+    const minutes = Math.floor((adjustedSeconds % 3600) / 60);
+    const secs = adjustedSeconds % 60;
+
+    if (endTime) {
+      return `${hours}h ${String(minutes).padStart(2, "0")}m`;
+    }
+
+    return `${hours}h ${String(minutes).padStart(2, "0")}m ${String(secs).padStart(2, "0")}s`;
+  };
+
+  const render = () => {
+    if (!startTime || Number.isNaN(startTime.getTime())) {
+      totalHoursElement.textContent = "0h 00m";
+      return;
+    }
+
+    if (endTime && !Number.isNaN(endTime.getTime())) {
+      totalHoursElement.textContent = formatDuration(initialSeconds);
+      return;
+    }
+
+    const nowMs = Date.now();
+    const startMs = startTime.getTime();
+    const elapsedSeconds = Math.floor(Math.max(0, nowMs - startMs) / 1000);
+    totalHoursElement.textContent = formatDuration(elapsedSeconds);
+  };
+
+  render();
+
+  if (startTime && !endTime) {
+    window.setInterval(render, 1000);
+  }
+});
 
 setInterval(updateTime, 1000);
 updateTime();

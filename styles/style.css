@@ -318,11 +318,15 @@ body {
 }
 
 .attendance-metrics {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  display: flex;
   gap: 0.9rem;
   padding: 1rem 1.2rem;
   border-bottom: 1px solid #182333;
+}
+
+.metric-card {
+  flex: 1;
+  min-width: 0;
 }
 
 .metric-card {
@@ -468,6 +472,12 @@ body {
   color: #00df77;
   background: rgba(0, 223, 119, 0.16);
   border: 1px solid rgba(0, 223, 119, 0.35);
+}
+
+.status-chip.absent {
+  color: #ff5b66;
+  background: rgba(255, 91, 102, 0.16);
+  border: 1px solid rgba(255, 91, 102, 0.35);
 }
 
 .status-chip.leave {
@@ -730,6 +740,125 @@ body {
   filter: brightness(1.06);
 }
 
+.task-modal {
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1080;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(95, 104, 117, 0.48);
+  backdrop-filter: blur(2px);
+  transition: all 0.3s ease-in-out;
+}
+
+.task-form {
+  width: min(680px, 100%);
+  border: 1px solid #223041;
+  border-radius: 12px;
+  background: #191c22;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+}
+
+.input-task,
+#task-description,
+.input-calendar {
+  width: 100%;
+  background-color: #0b0f14;
+  border: 1px solid #253245;
+  border-radius: 10px;
+  color: #dbe4f2;
+  outline: none;
+  box-shadow: none;
+}
+
+.input-task,
+.input-calendar {
+  height: 44px;
+  padding: 0 0.75rem;
+  font-size: 1rem;
+}
+
+#task-description {
+  min-height: 160px;
+  padding: 0.75rem 0.85rem;
+  resize: none;
+}
+
+.input-task::placeholder,
+#task-description::placeholder {
+  color: #627086;
+}
+
+.input-task:focus,
+#task-description:focus,
+.input-calendar:focus {
+  border-color: #2e9cf0;
+}
+
+.input-calendar {
+  color-scheme: dark;
+  max-width: 300px;
+}
+
+.input-calendar::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.8;
+  filter: invert(65%) sepia(5%) saturate(700%) hue-rotate(172deg);
+}
+
+.input-calendar::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+.task-modal-footer {
+  margin: 0 -1rem -1rem;
+  padding: 1rem;
+  border-top: 1px solid #223041;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.task-owner-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #f2fbff;
+  background: linear-gradient(145deg, #0dcaf0, #0aa3d6);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.task-create-btn {
+  border: 1px solid #2f8db6;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #0875a6, #0b6b95);
+  color: #56d5ff;
+  font-size: 1.05rem;
+  line-height: 1;
+  padding: 0.58rem 1.05rem;
+}
+
+.task-create-btn:hover {
+  filter: brightness(1.08);
+}
+
+.app-profile .dropdown-toggle {
+  color: #fff;
+}
+
+.app-profile .dropdown-toggle::after {
+  border-top-color: #fff;
+}
+
 @media (max-width: 768px) {
   .app-navbar-inner {
     flex-wrap: wrap;
@@ -829,5 +958,14 @@ body {
   .attendance-footer {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .task-modal-footer {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .task-create-btn {
+    width: 100%;
   }
 }
