@@ -30,21 +30,50 @@ $initialsSafe = htmlspecialchars((string)($initials ?? "U"), ENT_QUOTES, "UTF-8"
             </button>
            
             
-            <button
-              class="btn app-icon-btn"
-              type="button"
-              aria-label="Notifications">
-              <i class="bi bi-bell fs-5 text-white"></i>
-            </button>
-            <button class="btn app-icon-btn" type="button" aria-label="Help">
+            <div class="notif-wrapper position-relative">
+              <button
+                class="btn app-icon-btn"
+                type="button"
+                id="notifToggleBtn"
+                aria-label="Notifications">
+                <i class="bi bi-bell fs-5 text-white"></i>
+              </button>
+
+              <div class="notif-panel" id="notifPanel">
+                <div class="notif-header">
+                  <span class="notif-title">Notifications</span>
+                  <div class="d-flex align-items-center gap-2">
+                    <button class="notif-clear-btn" type="button" id="notifClearAll" disabled>
+                      <i class="bi bi-trash"></i> Clear all
+                    </button>
+                    <button class="notif-close-btn" type="button" id="notifCloseBtn" aria-label="Close">
+                      <i class="bi bi-x-lg"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="notif-body" id="notifBody">
+                  <div class="notif-empty">
+                    <i class="bi bi-bell-slash notif-empty-icon"></i>
+                    <p class="notif-empty-title">No notifications yet</p>
+                    <p class="notif-empty-subtitle">When you get notifications, they'll show up here.</p>
+                  </div>
+                </div>
+
+                <div class="notif-footer">
+                  <a href="#" class="notif-view-all">View all notifications</a>
+                </div>
+              </div>
+            </div>
+            <button class="btn app-icon-btn" type="button" id="helpToggleBtn" aria-label="Help">
               <i class="bi bi-question-circle fs-5 text-white"></i>
             </button>
-            <button
+            <!-- <button
               class="btn app-icon-btn"
               type="button"
               aria-label="Settings">
               <i class="bi bi-gear fs-5 text-white"></i>
-            </button>
+            </button> -->
           </div>
          <div class="dropdown app-profile">
   <button

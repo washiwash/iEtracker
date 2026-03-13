@@ -418,6 +418,9 @@ require __DIR__ . "/../partials/navbar.php";
       </section>
     </main>
 
+    <?php require __DIR__ . "/../partials/help_modal.php"; ?>
+
+    <script src="../../scripts/partial.js"></script>
     <script src="../../scripts/attendance.js"></script>
    <script
   src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"

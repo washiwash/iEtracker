@@ -296,21 +296,50 @@ if ($initials === "") $initials = "U";
             </button>
            
             
-            <button
-              class="btn app-icon-btn"
-              type="button"
-              aria-label="Notifications">
-              <i class="bi bi-bell fs-5 text-white"></i>
-            </button>
-            <button class="btn app-icon-btn" type="button" aria-label="Help">
+            <div class="notif-wrapper position-relative">
+              <button
+                class="btn app-icon-btn"
+                type="button"
+                id="notifToggleBtn"
+                aria-label="Notifications">
+                <i class="bi bi-bell fs-5 text-white"></i>
+              </button>
+
+              <div class="notif-panel" id="notifPanel">
+                <div class="notif-header">
+                  <span class="notif-title">Notifications</span>
+                  <div class="d-flex align-items-center gap-2">
+                    <button class="notif-clear-btn" type="button" id="notifClearAll" disabled>
+                      <i class="bi bi-trash"></i> Clear all
+                    </button>
+                    <button class="notif-close-btn" type="button" id="notifCloseBtn" aria-label="Close">
+                      <i class="bi bi-x-lg"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="notif-body" id="notifBody">
+                  <div class="notif-empty">
+                    <i class="bi bi-bell-slash notif-empty-icon"></i>
+                    <p class="notif-empty-title">No notifications yet</p>
+                    <p class="notif-empty-subtitle">When you get notifications, they'll show up here.</p>
+                  </div>
+                </div>
+
+                <div class="notif-footer">
+                  <a href="#" class="notif-view-all">View all notifications</a>
+                </div>
+              </div>
+            </div>
+            <button class="btn app-icon-btn" type="button" id="helpToggleBtn" aria-label="Help">
               <i class="bi bi-question-circle fs-5 text-white"></i>
             </button>
-            <button
+            <!-- <button
               class="btn app-icon-btn"
               type="button"
               aria-label="Settings">
               <i class="bi bi-gear fs-5 text-white"></i>
-            </button>
+            </button> -->
           </div>
          <div class="dropdown app-profile">
   <button
@@ -597,6 +626,64 @@ if ($initials === "") $initials = "U";
       </section>
 
 <!-- Pop-ups Section-->
+<section id="helpModal" class="help-modal">
+  <div class="help-modal-content">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="fw-semibold text-white mb-0">Help Center</h5>
+      <i id="helpCloseBtn" class="bi bi-x text-white fs-4" style="cursor: pointer;"></i>
+    </div>
+
+    <p class="text-secondary small mb-4">Quick guides and shortcuts to help you get the most out of iEtracker.</p>
+
+    <div class="help-section mb-3">
+      <div class="help-section-title">
+        <i class="bi bi-rocket-takeoff text-info"></i>
+        <span>Getting Started</span>
+      </div>
+      <div class="help-item">
+        <i class="bi bi-check-circle text-info"></i>
+        <div>
+          <span class="help-item-title">Create Tasks</span>
+          <p class="help-item-desc">Click the <strong>+ Create</strong> button in the navbar to add a new task with a name, description, and due date.</p>
+        </div>
+      </div>
+      <div class="help-item">
+        <i class="bi bi-clock text-info"></i>
+        <div>
+          <span class="help-item-title">Track Attendance</span>
+          <p class="help-item-desc">Use the <strong>Time In</strong> and <strong>Time Out</strong> actions on the dashboard to record your daily attendance.</p>
+        </div>
+      </div>
+      <div class="help-item">
+        <i class="bi bi-bell text-info"></i>
+        <div>
+          <span class="help-item-title">Notifications</span>
+          <p class="help-item-desc">Click the bell icon to view your latest notifications and stay up to date.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="help-section mb-3">
+      <div class="help-section-title">
+        <i class="bi bi-keyboard text-info"></i>
+        <span>Keyboard Shortcuts</span>
+      </div>
+      <div class="help-shortcut">
+        <span class="text-secondary small">Close any modal / panel</span>
+        <kbd>Esc</kbd>
+      </div>
+    </div>
+
+    <div class="help-section">
+      <div class="help-section-title">
+        <i class="bi bi-envelope text-info"></i>
+        <span>Need More Help?</span>
+      </div>
+      <p class="text-secondary small mb-0 ps-4">Reach out to your administrator or check the project documentation for more details.</p>
+    </div>
+  </div>
+</section>
+
 <section id="addModal" class="task-modal">
   <form method="POST" action="" class="task-form rounded-3 p-3">
     <input type="hidden" id="create_task" name="create_task" value="1">
@@ -645,6 +732,7 @@ if ($initials === "") $initials = "U";
 </section>
     </main>
 
+      <script src="scripts/partial.js"></script>
       <script src="scripts/script.js"></script>
 <script
   src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"

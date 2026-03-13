@@ -371,7 +371,7 @@ require __DIR__ . "/../partials/navbar.php";
         <div class="board-view">
           <div class="board-toolbar">
             <h2 class="board-title">Board View</h2>
-            <input class="board-search" type="text" placeholder="" />
+            <!-- <input class="board-search" type="text" placeholder="" /> -->
           </div>
 
           <div class="board-columns">
@@ -500,6 +500,9 @@ require __DIR__ . "/../partials/navbar.php";
       </div>
     </div>
 
+    <?php require __DIR__ . "/../partials/help_modal.php"; ?>
+
+    <script src="../../scripts/partial.js"></script>
     <script src="scripts/task.js"></script>
    <script
   src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
