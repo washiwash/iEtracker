@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 $fullName = (string)($_SESSION["full_name"] ?? "User");
 $email = (string)($_SESSION["email"] ?? "None");
-$role = (string)($_SESSION["role"] ?? "None");
+$jobTitle = (string)($_SESSION["job_title"] ?? "None");
 
 $parts = preg_split('/\s+/', trim($fullName));
 $initials = "";
@@ -152,7 +152,7 @@ require __DIR__ . "/../partials/navbar.php";
           <div class="profile-avatar"><?= htmlspecialchars($initials, ENT_QUOTES, "UTF-8") ?></div>
           <div>
             <h2 class="profile-name"><?= htmlspecialchars($fullName, ENT_QUOTES, "UTF-8") ?></h2>
-            <p class="profile-role">Role: <?= htmlspecialchars($role, ENT_QUOTES, "UTF-8") ?></p>
+            <p class="profile-role">Job Title: <?= htmlspecialchars($jobTitle, ENT_QUOTES, "UTF-8") ?></p>
           </div>
         </article>
 

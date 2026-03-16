@@ -171,7 +171,7 @@
       return isWeekday && qualifiesPresent;
     }).length;
     const lifetimeHours = totalWorkHours();
-    const absentDays = Math.max(0, workingDaysForViewDate() - presentDays);
+    const absentDays = visibleRows.length === 0 ? 0 : Math.max(0, workingDaysForViewDate() - presentDays);
 
     if (daysPresentValue) {
       daysPresentValue.textContent = String(presentDays);

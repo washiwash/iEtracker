@@ -1,0 +1,319 @@
+.user-mgmt-content {
+  color: #eaf1fb;
+  animation: fadeUp 0.45s ease;
+}
+
+.user-mgmt-header {
+  margin-bottom: 18px;
+}
+
+.user-mgmt-header h2 {
+  font-weight: 600;
+  font-size: clamp(20px, 2vw, 30px);
+  margin: 0;
+}
+
+.user-mgmt-header p {
+  margin: 6px 0 0;
+  color: #9aa6b2;
+  font-size: 14px;
+}
+
+.admin {
+  background: #102a3a;
+  color: #35c4ff;
+  padding: 3px 11px;
+  border-radius: 999px;
+  font-size: 11px;
+  margin-left: 10px;
+  border: 1px solid rgba(53, 196, 255, 0.3);
+  vertical-align: middle;
+}
+
+.user-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.user-stat-card {
+  background: #111822;
+  border: 1px solid #253445;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.user-stat-card .stat-label {
+  color: #9aacc1;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-stat-card h3 {
+  margin: 6px 0 0;
+  font-size: 36px;
+  line-height: 1;
+}
+
+.user-stat-card.neutral {
+  background: linear-gradient(90deg, #1b1b1d, #1a1f28);
+  border-color: #2d3848;
+  color: #d7e5f8;
+}
+
+.user-stat-card.active {
+  background: linear-gradient(90deg, #0b2a20, #0b2118);
+  border-color: #18563a;
+  color: #29e795;
+}
+
+.user-stat-card.deactivated {
+  background: linear-gradient(90deg, #351214, #2b1214);
+  border-color: #72303a;
+  color: #ff666e;
+}
+
+.user-tools-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.search-wrap {
+  position: relative;
+  flex: 1;
+}
+
+.search-wrap i {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #6f87a3;
+  font-size: 13px;
+}
+
+.search-wrap input {
+  width: 100%;
+  height: 38px;
+  border-radius: 9px;
+  border: 1px solid #273649;
+  background: linear-gradient(90deg, #17191d, #1a1f29);
+  color: #d9e6f7;
+  padding: 0 12px 0 30px;
+  outline: none;
+}
+
+.search-wrap input::placeholder {
+  color: #70839a;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 6px;
+}
+
+.filter-tab {
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  color: #8b9db3;
+  min-width: 56px;
+  height: 34px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.filter-tab.active {
+  color: #35c4ff;
+  border-color: rgba(53, 196, 255, 0.45);
+  background: rgba(16, 42, 58, 0.55);
+}
+
+.table-shell {
+  border: 1px solid #213042;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #131a24, #11171f);
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table thead tr {
+  background: linear-gradient(90deg, #1a1a1d, #1b212a);
+}
+
+.user-table th {
+  color: #7d91a8;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 12px 14px;
+}
+
+.user-table td {
+  padding: 14px;
+  border-top: 1px solid #1d2a3a;
+  color: #d6e3f2;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar-pill {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(160deg, #0aa6e3, #0d85c7);
+  color: #f2f8ff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.user-name {
+  color: #e8f2ff;
+  font-size: 14px;
+}
+
+.you-pill {
+  margin-left: 6px;
+  font-size: 10px;
+  background: rgba(20, 141, 198, 0.35);
+  color: #89dbff;
+  padding: 2px 6px;
+  border-radius: 999px;
+}
+
+.email-cell {
+  color: #9ab1c7;
+  font-size: 13px;
+}
+
+.type-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.type-pill.admin {
+  background: rgba(109, 49, 166, 0.32);
+  color: #c59fff;
+}
+
+.type-pill.user {
+  background: rgba(54, 62, 75, 0.52);
+  color: #b9c5d2;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.status-pill.active {
+  background: rgba(10, 85, 52, 0.32);
+  color: #2af598;
+}
+
+.status-pill.deactivated {
+  background: rgba(115, 28, 36, 0.32);
+  color: #ff777e;
+}
+
+.status-pill i {
+  font-size: 14px;
+  margin-right: 1px;
+}
+
+.action-btn {
+  border: 1px solid;
+  border-radius: 9px;
+  height: 30px;
+  min-width: 92px;
+  padding: 0 10px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: transparent;
+}
+
+.action-btn.danger {
+  color: #ff666e;
+  border-color: rgba(190, 40, 54, 0.45);
+}
+
+.action-btn.restore {
+  color: #79b5ff;
+  border-color: rgba(45, 95, 173, 0.45);
+}
+
+.self-label {
+  color: #7b90a8;
+  font-size: 12px;
+}
+
+.empty-state {
+  margin: 0;
+  color: #92a5bb;
+  text-align: center;
+  padding: 14px;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1100px) {
+  .user-stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .user-tools-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-tabs {
+    justify-content: flex-start;
+  }
+
+  .table-shell {
+    overflow-x: auto;
+  }
+
+  .user-table {
+    min-width: 920px;
+  }
+}

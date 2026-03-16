@@ -22,13 +22,13 @@ $initialsSafe = htmlspecialchars((string)($initials ?? "U"), ENT_QUOTES, "UTF-8"
 
         <div class="d-flex align-items-center gap-3 app-navbar-actions">
           <div class="d-flex align-items-center gap-2 app-navbar-tools">
-            <button
+            <!-- <button
               type="button"
               id="openModal"
               data-open-task-modal="true"
               class="btn btn-info btn-sm px-3 fw-medium text-white">
               <i class="bi bi-plus-lg"></i> Create
-            </button>
+            </button> -->
            
             
             <div class="notif-wrapper position-relative">
@@ -84,9 +84,9 @@ $initialsSafe = htmlspecialchars((string)($initials ?? "U"), ENT_QUOTES, "UTF-8"
     data-bs-toggle="dropdown"
     aria-expanded="false"
   >
-    <span class="text-white small fw-medium"><?= htmlspecialchars($fullName, ENT_QUOTES, "UTF-8") ?></span>
+    <span class="text-white small fw-medium"><?= $fullNameSafe ?></span>
     <span class="rounded-pill bg-info text-dark fw-semibold px-2 py-1">
-      <?= htmlspecialchars($initials, ENT_QUOTES, "UTF-8") ?>
+      <?= $initialsSafe ?>
     </span>
   </button>
 
@@ -98,7 +98,7 @@ $initialsSafe = htmlspecialchars((string)($initials ?? "U"), ENT_QUOTES, "UTF-8"
     </li>
     <li><hr class="dropdown-divider"></li> -->
     <li>
-      <a class="dropdown-item text-danger" href="./views/authenticator/logout.php">
+      <a class="dropdown-item text-danger" href="<?= $basePath ?>views/authenticator/logout.php">
         <i class="bi bi-box-arrow-right me-2"></i>Logout
       </a>
     </li>

@@ -7,7 +7,7 @@ $error = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $fullName = trim($_POST["full_name"] ?? "");
   $email    = trim($_POST["email"] ?? "");
-  $role     = trim($_POST["role"] ?? "");
+  $jobTitle = trim($_POST["job_title"] ?? "");
   $pass     = (string)($_POST["password"] ?? "");
   $confirm  = (string)($_POST["confirm_password"] ?? "");
 
@@ -24,9 +24,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       $hash = password_hash($pass, PASSWORD_DEFAULT);
 
       $stmt = $pdo->prepare(
-        "INSERT INTO users (full_name, email, role, password_hash) VALUES (?, ?, ?, ?)"
+        "INSERT INTO users (full_name, email, job_title, role, password_hash) VALUES (?, ?, ?, ?, ?)"
       );
-      $stmt->execute([$fullName, $email, $role, $hash]);
+      $stmt->execute([$fullName, $email, $jobTitle, "user", $hash]);
 
       header("Location: login.php?registered=1");
       exit;
@@ -76,8 +76,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
           <label>Email Address</label>
           <input name="email" type="email" placeholder="you@example.com" required />
 
-          <label>Role / Position</label>
-          <input name="role" type="text" placeholder="add role" />
+          <label>Job Title</label>
+          <input name="job_title" type="text" placeholder="add job title" />
 
           <label>Password</label>
           <div class="password-field">

@@ -13,6 +13,35 @@ $userId = (int)($_SESSION["user_id"] ?? 0);
 $taskError = "";
 $taskSuccess = "";
 
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["create_task"])) {
+  $taskName = trim((string)($_POST["task_name"] ?? ""));
+  $taskDescription = trim((string)($_POST["task_description"] ?? ""));
+  $dueDate = trim((string)($_POST["due_date"] ?? ""));
+  $dueTime = trim((string)($_POST["due_time"] ?? ""));
+
+  if ($userId <= 0 || $taskName === "" || $dueDate === "" || $dueTime === "") {
+    $taskError = "Please complete all required fields.";
+  } else {
+    $dueAt = $dueDate . " " . $dueTime . ":00";
+    $dateTime = DateTime::createFromFormat("Y-m-d H:i:s", $dueAt);
+
+    if ($dateTime === false || $dateTime->format("Y-m-d H:i:s") !== $dueAt) {
+      $taskError = "Please provide a valid due date and time.";
+    } else {
+      try {
+        $insert = $pdo->prepare(
+          "INSERT INTO tasks (user_id, task_name, task_description, due_at, status)
+           VALUES (?, ?, ?, ?, 'pending')"
+        );
+        $insert->execute([$userId, $taskName, $taskDescription, $dueAt]);
+        $taskSuccess = "Task created successfully.";
+      } catch (PDOException $e) {
+        $taskError = "Failed to save task. Please try again.";
+      }
+    }
+  }
+}
+
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update_task_status"])) {
   $taskId = (int)($_POST["task_id"] ?? 0);
   $requestedStatus = strtolower(trim((string)($_POST["task_status"] ?? "")));
@@ -200,55 +229,6 @@ if ($initials === "") $initials = "U";
 $basePath = "../../";
 require __DIR__ . "/../partials/navbar.php";
 ?>
-    <!-- <nav class="navbar navbar-expand-lg app-navbar">
-      <div class="container-fluid app-navbar-inner">
-        <a
-          href="#"
-          class="app-brand d-flex align-items-center gap-2 text-decoration-none">
-           <img
-            class="app-logo"
-            src="../../resources/images/logo.svg"
-            alt="logo" />
-          <div class="d-flex align-items-center lh-1">
-            <span class="text-info fs-5 fw-bold text-decoration-none">iE</span
-            ><span class="text-white fs-5 fw-bold text-decoration-none"
-              >tracker</span
-            >
-          </div>
-        </a>
-
-        <div class="d-flex align-items-center gap-3 app-navbar-actions">
-          <div class="d-flex align-items-center gap-2 app-navbar-tools">
-            <button
-              type="button"
-              class="btn btn-info btn-sm px-3 fw-medium text-white">
-              <i class="bi bi-plus-lg"></i> Create
-            </button>
-            <button
-              class="btn app-icon-btn"
-              type="button"
-              aria-label="Notifications">
-              <i class="bi bi-bell fs-5 text-white"></i>
-            </button>
-            <button class="btn app-icon-btn" type="button" aria-label="Help">
-              <i class="bi bi-question-circle fs-5 text-white"></i>
-            </button>
-            <button
-              class="btn app-icon-btn"
-              type="button"
-              aria-label="Settings">
-              <i class="bi bi-gear fs-5 text-white"></i>
-            </button>
-          </div>
-          <div class="d-flex align-items-center gap-2 app-profile">
-            <span class="text-white small fw-medium"><?= htmlspecialchars($fullName, ENT_QUOTES, "UTF-8") ?></span>
-            <span class="rounded-pill bg-info text-dark fw-semibold px-2 py-1"
-              ><?= htmlspecialchars($initials, ENT_QUOTES, "UTF-8") ?></span
-            >
-          </div>
-        </div>
-      </div>
-    </nav> -->
 
     <aside class="sidebar d-flex flex-column p-3">
       <!-- Workspace Switcher Area -->
@@ -502,8 +482,55 @@ require __DIR__ . "/../partials/navbar.php";
 
     <?php require __DIR__ . "/../partials/help_modal.php"; ?>
 
+    <section id="addModal" class="task-modal">
+      <form method="POST" action="" class="task-form rounded-3 p-3">
+        <input type="hidden" id="create_task" name="create_task" value="1">
+
+        <div class="d-flex flex-row justify-content-between text-light mb-3">
+          <p class="fw-semibold mb-0">New Task</p>
+          <i id="closeModal" class="bi bi-x" style="cursor: pointer;"></i>
+        </div>
+
+        <div class="mb-3">
+          <input
+            type="text"
+            name="task_name"
+            placeholder="Task Name"
+            class="input-task text-secondary border-0"
+            required>
+        </div>
+
+        <div class="mb-3">
+          <label for="task-description" class="text-secondary d-flex align-items-center gap-2 mb-2">
+            Task Description
+          </label>
+          <textarea
+            id="task-description"
+            name="task_description"
+            class="text-secondary border-0"
+            rows="3"
+            placeholder="What is the task about?"></textarea>
+
+          <label for="due-date" class="text-secondary d-flex align-items-center gap-2 mb-2 mt-2">
+            Due Date
+          </label>
+          <input type="date" id="due-date" name="due_date" class="input-calendar text-secondary" required>
+
+          <label for="due-time" class="text-secondary d-flex align-items-center gap-2 mb-2 mt-2">
+            Due Time
+          </label>
+          <input type="time" id="due-time" name="due_time" class="input-calendar text-secondary" required>
+        </div>
+
+        <div class="task-modal-footer">
+          <span class="task-owner-badge"><?= htmlspecialchars($initials, ENT_QUOTES, "UTF-8") ?></span>
+          <button type="submit" class="task-create-btn">Create task</button>
+        </div>
+      </form>
+    </section>
+
     <script src="../../scripts/partial.js"></script>
-    <script src="scripts/task.js"></script>
+      <script src="../../scripts/script.js"></script>
    <script
   src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"

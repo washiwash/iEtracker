@@ -6,6 +6,14 @@ $pdo = require __DIR__ . "/../../database/ietracker_database.php";
 
 $error = "";
 $registered = (isset($_GET["registered"]) && $_GET["registered"] === "1");
+$hasIsActiveColumn = false;
+
+try {
+  $columnCheck = $pdo->query("SHOW COLUMNS FROM users LIKE 'is_active'");
+  $hasIsActiveColumn = $columnCheck !== false && $columnCheck->fetch() !== false;
+} catch (PDOException $e) {
+  $hasIsActiveColumn = false;
+}
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $email = trim($_POST["email"] ?? "");
@@ -14,17 +22,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   if ($email === "" || $pass === "") {
     $error = "Please enter your email and password.";
   } else {
-    $stmt = $pdo->prepare("SELECT id, full_name, email, role, password_hash FROM users WHERE email = ? LIMIT 1");
+    $selectColumns = "id, full_name, email, job_title, role, password_hash";
+    if ($hasIsActiveColumn) {
+      $selectColumns .= ", is_active";
+    }
+
+    $stmt = $pdo->prepare("SELECT " . $selectColumns . " FROM users WHERE email = ? LIMIT 1");
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 
     if (!$user || !password_verify($pass, $user["password_hash"])) {
       $error = "Invalid email or password.";
+    } elseif ($hasIsActiveColumn && (int)($user["is_active"] ?? 1) !== 1) {
+      $error = "Your account is deactivated. Please contact your administrator.";
     } else {
       $_SESSION["user_id"] = (int)$user["id"];
       $_SESSION["full_name"] = (string)$user["full_name"];
       $_SESSION["email"] = (string)($user["email"] ?? "");
-      $_SESSION["role"] = (string)($user["role"] ?? "None");
+      $_SESSION["job_title"] = (string)($user["job_title"] ?? "None");
+      $_SESSION["role"] = (string)($user["role"] ?? "user");
       header("Location: ../../index.php");
       exit;
     }

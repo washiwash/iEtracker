@@ -3,7 +3,13 @@ declare(strict_types=1);
 session_start();
 
 if (!isset($_SESSION["user_id"])) {
-  header("Location: views/authenticator/login.php");
+  header("Location: ../authenticator/login.php");
+  exit;
+}
+
+// Check if user has admin role
+if (($_SESSION["role"] ?? "") !== "admin") {
+  header("Location: ../../index.php");
   exit;
 }
 
@@ -75,7 +81,7 @@ if ($initials === "") $initials = "U";
     
     <?php
 $basePath = "../../";
-require __DIR__ . "/../partials/navbar.php";
+  require __DIR__ . "/../partials/admin_navbar.php";
 ?>
    
 
@@ -97,22 +103,17 @@ require __DIR__ . "/../partials/navbar.php";
         style="--bs-border-opacity: 0.1"></span>
       <div class="d-flex flex-column gap-1 mb-4">
         <a
-          href="../../index.php"
+          href="./admin_dashbard.php"
           class="nav-link d-flex align-items-center gap-3 mt-3">
-          <i class="bi bi-house-door"></i> Dashboard
+          <i class="bi bi-house-door"></i> Team Overview
         </a>
         <a
-          href="./task_tracker.php"
+          href="./admin_user_management.php"
           class="nav-link d-flex align-items-center gap-3">
-          <i class="bi bi-check2-square"></i> Task Tracker
+          <i class="bi bi-check2-square"></i> User Management
         </a>
         <a
-          href="./attendance.php"
-          class="nav-link d-flex align-items-center gap-3">
-          <i class="bi bi-person"></i> My Attendance
-        </a>
-        <a
-          href="./profile_settings.php"
+          href="./admin_profile_settings.php"
           class="nav-link active d-flex align-items-center gap-3 text-info">
           <i class="bi bi-gear"></i> Profile Settings
         </a>
@@ -159,11 +160,11 @@ require __DIR__ . "/../partials/navbar.php";
         </article>
 
       <nav class="profile-tabs" aria-label="Profile tabs">
-          <a href="./profile_settings.php" class="profile-tab  text-decoration-none">
+          <a href="./admin_profile_settings.php" class="profile-tab  text-decoration-none">
             <i class="bi bi-person"></i>
             <span>Account Details</span>
           </a>
-          <a href="./profile_security.php" class="profile-tab active text-decoration-none">
+          <a href="./admin_profile_security.php" class="profile-tab active text-decoration-none">
             <i class="bi bi-lock"></i>
             <span>Security</span>
           </a>
@@ -226,7 +227,7 @@ require __DIR__ . "/../partials/navbar.php";
       </section>
     </main>
 
-    <?php require __DIR__ . "/../partials/help_modal.php"; ?>
+    <?php require __DIR__ . "/../partials/admin_help_modal.php"; ?>
 
     <script src="../../scripts/partial.js"></script>
     <script

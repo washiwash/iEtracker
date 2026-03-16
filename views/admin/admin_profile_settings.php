@@ -3,7 +3,13 @@ declare(strict_types=1);
 session_start();
 
 if (!isset($_SESSION["user_id"])) {
-  header("Location: views/authenticator/login.php");
+  header("Location: ../authenticator/login.php");
+  exit;
+}
+
+// Check if user has admin role
+if (($_SESSION["role"] ?? "") !== "admin") {
+  header("Location: ../../index.php");
   exit;
 }
 
@@ -13,28 +19,28 @@ $success = "";
 $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-  $currentPass = (string)($_POST["current_password"] ?? "");
-  $newPass = (string)($_POST["new_password"] ?? "");
-  $confirmPass = (string)($_POST["confirm_password"] ?? "");
+  $newFullName = trim((string)($_POST["full_name"] ?? ""));
+  $newEmail = trim((string)($_POST["email"] ?? ""));
 
-  if ($currentPass === "" || $newPass === "" || $confirmPass === "") {
+  if ($newFullName === "" || $newEmail === "") {
     $error = "Please fill in all fields.";
-  } elseif ($newPass !== $confirmPass) {
-    $error = "New passwords do not match.";
-  } elseif (strlen($newPass) < 8) {
-    $error = "New password must be at least 8 characters.";
+  } elseif (!filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
+    $error = "Please enter a valid email address.";
   } else {
-    $stmt = $pdo->prepare("SELECT password_hash FROM users WHERE id = ? LIMIT 1");
-    $stmt->execute([(int)$_SESSION["user_id"]]);
-    $row = $stmt->fetch();
+    try {
+      $stmt = $pdo->prepare("UPDATE users SET full_name = ?, email = ? WHERE id = ?");
+      $stmt->execute([$newFullName, $newEmail, (int)$_SESSION["user_id"]]);
 
-    if (!$row || !password_verify($currentPass, $row["password_hash"])) {
-      $error = "Current password is incorrect.";
-    } else {
-      $newHash = password_hash($newPass, PASSWORD_DEFAULT);
-      $upd = $pdo->prepare("UPDATE users SET password_hash = ? WHERE id = ?");
-      $upd->execute([$newHash, (int)$_SESSION["user_id"]]);
-      $success = "Password updated successfully.";
+      $_SESSION["full_name"] = $newFullName;
+      $_SESSION["email"] = $newEmail;
+
+      $success = "Profile updated successfully.";
+    } catch (PDOException $e) {
+      if (($e->getCode() ?? "") === "23000") {
+        $error = "That email is already in use.";
+      } else {
+        $error = "Failed to update profile. Please try again.";
+      }
     }
   }
 }
@@ -72,15 +78,14 @@ if ($initials === "") $initials = "U";
     <link rel="stylesheet" href="../../styles/style.css" />
   </head>
   <body>
-    
     <?php
-$basePath = "../../";
-require __DIR__ . "/../partials/navbar.php";
-?>
-   
+  $basePath = "../../";
+  require __DIR__ . "/../partials/admin_navbar.php";
+  ?>
 
-    <aside class="sidebar d-flex flex-column p-3">
-   <div class="d-flex align-items-center justify-content-between mb-3 mt-3 p-2">
+   <aside class="sidebar d-flex flex-column p-3">
+      <!-- Workspace Switcher Area -->
+      <div class="d-flex align-items-center justify-content-between mb-3 mt-3 p-2">
         <div class="d-flex align-items-center gap-2">
          <span class="rounded-pill bg-info text-dark fw-semibold px-2 py-1">
   <?= htmlspecialchars($initials, ENT_QUOTES, "UTF-8") ?>
@@ -88,61 +93,33 @@ require __DIR__ . "/../partials/navbar.php";
          <span class="text-white small fw-medium"><?= htmlspecialchars($fullName, ENT_QUOTES, "UTF-8") ?>'s Workspace</span>
         </div>
 
-        <!-- <i class="bi bi-caret-down-fill text-secondary"></i> -->
       </div>
-
 
       <span
         class="border border-bottom-0 border-info"
         style="--bs-border-opacity: 0.1"></span>
+      <!-- Primary Navigation -->
       <div class="d-flex flex-column gap-1 mb-4">
         <a
-          href="../../index.php"
+          href="./admin_team_overview.php"
           class="nav-link d-flex align-items-center gap-3 mt-3">
-          <i class="bi bi-house-door"></i> Dashboard
+          <i class="bi bi-house-door"></i> Team Overview
         </a>
         <a
-          href="./task_tracker.php"
+          href="./admin_user_management.php"
           class="nav-link d-flex align-items-center gap-3">
-          <i class="bi bi-check2-square"></i> Task Tracker
+          <i class="bi bi-check2-square"></i> User Management
         </a>
-        <a
-          href="./attendance.php"
-          class="nav-link d-flex align-items-center gap-3">
+        <!-- <a href="../users/attendance.php" class="nav-link d-flex align-items-center gap-3">
           <i class="bi bi-person"></i> My Attendance
-        </a>
-        <a
-          href="./profile_settings.php"
-          class="nav-link active d-flex align-items-center gap-3 text-info">
+        </a> -->
+        <a href="./admin_profile_settings.php" class="nav-link active d-flex align-items-center text-info gap-3">
           <i class="bi bi-gear"></i> Profile Settings
         </a>
       </div>
 
-      <!-- <div class="d-flex flex-column gap-1">
-        <div
-          class="d-flex align-items-center justify-content-between px-2 mb-2">
-          <small
-            class="text-uppercase text-secondary fw-bold"
-            style="font-size: 0.7rem; letter-spacing: 1px"
-            >Projects</small
-          >
-          <button class="btn btn-sm p-0 text-white">
-            <i class="bi bi-plus-lg"></i>
-          </button>
-        </div>
-        <a
-          href="./project_ietracker.html"
-          class="nav-link d-flex align-items-center gap-3">
-          <i class="bi bi-circle-fill fs-6 text-info"></i> Project iETracker
-        </a>
-        <a
-          href="./project_marketing_site.html"
-          class="nav-link d-flex align-items-center gap-3">
-          <i class="bi bi-circle-fill fs-6 text-warning"></i> Marketing Site
-        </a>
-      </div> -->
+      
     </aside>
-
     <main class="app-main profile-page">
       <section class="profile-shell">
         <h1 class="profile-title">Profile Settings</h1>
@@ -158,19 +135,19 @@ require __DIR__ . "/../partials/navbar.php";
           </div>
         </article>
 
-      <nav class="profile-tabs" aria-label="Profile tabs">
-          <a href="./profile_settings.php" class="profile-tab  text-decoration-none">
+        <nav class="profile-tabs" aria-label="Profile tabs">
+          <a href="./admin_profile_settings.php" class="profile-tab active text-decoration-none">
             <i class="bi bi-person"></i>
             <span>Account Details</span>
           </a>
-          <a href="./profile_security.php" class="profile-tab active text-decoration-none">
+          <a href="./admin_profile_security.php" class="profile-tab text-decoration-none">
             <i class="bi bi-lock"></i>
             <span>Security</span>
           </a>
         </nav>
 
         <section class="profile-form-card" aria-label="Personal information">
-          <h3 class="profile-form-title">Change Password</h3>
+          <h3 class="profile-form-title">Personal Information</h3>
 
           <?php if ($success !== ""): ?>
             <div class="alert alert-success py-2"><?= htmlspecialchars($success, ENT_QUOTES, "UTF-8") ?></div>
@@ -183,26 +160,26 @@ require __DIR__ . "/../partials/navbar.php";
 
           <div class="profile-form-grid">
             <label class="profile-field">
-              <span class="profile-label">Current Password</span>
+              <span class="profile-label">Full Name</span>
               <span class="profile-input-wrap">
-                <i class="bi bi-lock"></i>
-                <input type="password" name="current_password" placeholder="Enter current password" required />
+                <i class="bi bi-person"></i>
+                <input
+                  type="text"
+                  name="full_name"
+                  value="<?= htmlspecialchars($fullName, ENT_QUOTES, "UTF-8") ?>"
+                  required />
               </span>
             </label>
 
             <label class="profile-field">
-              <span class="profile-label">New Password</span>
+              <span class="profile-label">Email Address</span>
               <span class="profile-input-wrap">
-                <i class="bi bi-lock"></i>
-                <input type="password" name="new_password" placeholder="Enter new password" required />
-              </span>
-            </label>
-
-            <label class="profile-field">
-              <span class="profile-label">Confirm Password</span>
-              <span class="profile-input-wrap">
-                <i class="bi bi-lock"></i>
-                <input type="password" name="confirm_password" placeholder="Confirm new password" required />
+                <i class="bi bi-envelope"></i>
+                <input
+                  type="email"
+                  name="email"
+                  value="<?= htmlspecialchars($email, ENT_QUOTES, "UTF-8") ?>"
+                  required />
               </span>
             </label>
 
@@ -226,7 +203,7 @@ require __DIR__ . "/../partials/navbar.php";
       </section>
     </main>
 
-    <?php require __DIR__ . "/../partials/help_modal.php"; ?>
+    <?php require __DIR__ . "/../partials/admin_help_modal.php"; ?>
 
     <script src="../../scripts/partial.js"></script>
     <script
