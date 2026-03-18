@@ -1,13 +1,6 @@
 <?php
-declare(strict_types=1);
-session_start();
-
-if (!isset($_SESSION["user_id"])) {
-  header("Location: ../authenticator/login.php");
-  exit;
-}
-
-// Check if user has admin role
+require_once __DIR__ . '/../../middleware/auth_middleware.php';
+requireRole(['admin']);
 if (($_SESSION["role"] ?? "") !== "admin") {
   header("Location: ../../index.php");
   exit;
@@ -82,6 +75,7 @@ if ($initials === "") $initials = "U";
     <?php
 $basePath = "../../";
   require __DIR__ . "/../partials/admin_navbar.php";
+  
 ?>
    
 

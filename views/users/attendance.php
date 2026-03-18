@@ -1,11 +1,6 @@
 <?php
-declare(strict_types=1);
-session_start();
-
-if (!isset($_SESSION["user_id"])) {
-  header("Location: views/authenticator/login.php");
-  exit;
-}
+require_once __DIR__ . '/../../middleware/auth_middleware.php';
+requireRole(['user']);
 
 date_default_timezone_set("Asia/Manila");
 

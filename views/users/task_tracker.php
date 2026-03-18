@@ -1,11 +1,6 @@
 <?php
-declare(strict_types=1);
-session_start();
-
-if (!isset($_SESSION["user_id"])) {
-  header("Location: views/authenticator/login.php");
-  exit;
-}
+require_once __DIR__ . '/../../middleware/auth_middleware.php';
+requireRole(['user']);
 
 $pdo = require __DIR__ . "/../../database/ietracker_database.php";
 $userId = (int)($_SESSION["user_id"] ?? 0);

@@ -1,13 +1,8 @@
 <?php
-declare(strict_types=1);
-session_start();
+require_once __DIR__ . '/../../middleware/auth_middleware.php';
+requireRole(['admin']);
 
 date_default_timezone_set("Asia/Manila");
-
-if (!isset($_SESSION["user_id"])) {
-  header("Location: ../authenticator/login.php");
-  exit;
-}
 
 $pdo = require __DIR__ . "/../../database/ietracker_database.php";
 $currentUserId = (int) ($_SESSION["user_id"] ?? 0);

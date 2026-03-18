@@ -41,7 +41,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       $_SESSION["email"] = (string)($user["email"] ?? "");
       $_SESSION["job_title"] = (string)($user["job_title"] ?? "None");
       $_SESSION["role"] = (string)($user["role"] ?? "user");
-      header("Location: ../../index.php");
+      $redirectUrl = ($user["role"] === "admin") ? "../admin/admin_team_overview.php" : "../../index.php";
+      header("Location: $redirectUrl");
       exit;
     }
   }
