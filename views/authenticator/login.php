@@ -96,15 +96,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
           </div>
 
           <label class="form-label">Password</label>
-          <div class="input-group">
+          <div  class="input-group">
             <span class="input-group-text">
               <i class="bi bi-lock"></i>
             </span>
-            <input name="password" type="password" class="form-control" placeholder="Enter your password" required />
-            <span class="input-group-text">
-              <i class="bi bi-eye"></i>
-            </span>
+            <input id="password" name="password" type="password" class="form-control" placeholder="Enter your password" required />
+            <span class="password-btn input-group-text">
+  <i class="password-eye bi bi-eye-slash-fill"></i>
+</span>
           </div>
+
+          
 
           <a href="#" class="forgot">Forgot password?</a>
 
@@ -119,7 +121,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </form>
       </div>
     </div>
-
+    
+     <script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+  crossorigin="anonymous"></script>
+  <script src="../../scripts/authentication.js"></script>
+  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
