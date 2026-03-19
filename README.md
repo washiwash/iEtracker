@@ -12,7 +12,6 @@ It combines daily time logs, task workflow monitoring, and profile management in
 3. Attendance Module
 4. Task Tracker Module
 5. Profile Module
-
 ## Tech Stack
 
 Backend: PHP 8+ (strict types, sessions, PDO prepared statements)
