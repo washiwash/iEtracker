@@ -102,7 +102,7 @@
     return todaySeconds / 3600;
   }
 
-  function workingDaysForViewDate() {
+  function workingDaysForViewDate(startDay = 1) {
     const year = viewDate.getFullYear();
     const month = viewDate.getMonth();
     const today = new Date();
@@ -112,7 +112,7 @@
     const dayLimit = isCurrentMonth ? today.getDate() : monthLastDay;
 
     let weekdays = 0;
-    for (let day = 1; day <= dayLimit; day += 1) {
+    for (let day = startDay; day <= dayLimit; day += 1) {
       const date = new Date(year, month, day);
       const weekDay = date.getDay();
       if (weekDay !== 0 && weekDay !== 6) {
@@ -170,8 +170,19 @@
 
       return isWeekday && qualifiesPresent;
     }).length;
+
     const lifetimeHours = totalWorkHours();
-    const absentDays = visibleRows.length === 0 ? 0 : Math.max(0, workingDaysForViewDate() - presentDays);
+
+    let absentDays = 0;
+    if (visibleRows.length > 0) {
+      const visibleDates = visibleRows
+        .map((row) => String(row.dataset.date || ""))
+        .filter(Boolean)
+        .map((date) => parseInt(date.split("-")[2] || "0", 10));
+      
+      const startDay = visibleDates.length > 0 ? Math.min(...visibleDates) : 1;
+      absentDays = Math.max(0, workingDaysForViewDate(startDay) - presentDays);
+    }
 
     if (daysPresentValue) {
       daysPresentValue.textContent = String(presentDays);
@@ -185,7 +196,9 @@
       totalHoursValue.textContent = `${lifetimeHours.toFixed(1)}h`;
     }
 
-    persistAbsentDays(absentDays);
+    if (visibleRows.length > 0) {
+      persistAbsentDays(absentDays);
+    }
   }
 
   if (prevMonthBtn) {

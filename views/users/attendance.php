@@ -16,8 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["save_days_absent"])) 
     exit;
   }
 
-  $daysAbsentDb = 0;
-
 if ($userId > 0) {
   $stmt = $pdo->prepare("SELECT days_absent FROM users WHERE id = ? LIMIT 1");
   $stmt->execute([$userId]);
@@ -59,8 +57,17 @@ foreach (array_slice($parts ?: [], 0, 2) as $p) {
 if ($initials === "") $initials = "U";
 
 $attendanceRows = [];
+$daysPresentDb = 0;
+$daysAbsentDb = 0;
+$daysPresentDb = 0;
+$daysAbsentDb = 0;
 
 if ($userId > 0) {
+  // Keep stored value as fallback, but overwrite later based on attendance data.
+  $stmt = $pdo->prepare("SELECT days_absent FROM users WHERE id = ? LIMIT 1");
+  $stmt->execute([$userId]);
+  $daysAbsentDb = (int)($stmt->fetchColumn() ?? 0);
+
   try {
     $attendanceStmt = $pdo->prepare(
       "SELECT time_in, time_out
@@ -136,12 +143,14 @@ if ($userId > 0) {
         ? (((int)$lastOut->format("H") * 60) + (int)$lastOut->format("i"))
         : -1;
 
-      $qualifiesPresent = $isWeekday && $timeInMinutes <= 540 && $timeOutMinutes >= 1080;
+      // A weekday qualifies as present only if 8+ hours worked (28800 seconds = 8 hours)
+      $qualifiesPresent = $isWeekday && (int)$dayData["work_seconds"] >= 28800;
 
-      $workSeconds = 0;
-      if ($lastOut !== null) {
-        $workSeconds = max(0, (int)$dayData["work_seconds"]);
-        $workSeconds = max(0, $workSeconds - 3600);
+      $workSeconds = (int)$dayData["work_seconds"];
+      if ($workSeconds > 3600) {
+        $workSeconds -= 3600;
+      } else {
+        $workSeconds = 0;
       }
 
       $attendanceRows[] = [
@@ -166,8 +175,50 @@ if ($userId > 0) {
         return strcmp((string)$b["date_key"], (string)$a["date_key"]);
       }
     );
+
+    $today = new DateTimeImmutable("now", new DateTimeZone("Asia/Manila"));
+    $currentYear = (int)$today->format("Y");
+    $currentMonth = (int)$today->format("n");
+    $currentDay = (int)$today->format("j");
+
+    $daysPresentDb = 0;
+    $firstRowDay = null;
+
+    foreach ($attendanceRows as $row) {
+      if (
+        (int)$row["year"] === $currentYear
+        && (int)$row["month"] === $currentMonth
+        && (bool)$row["is_weekday"]
+      ) {
+        if ((bool)$row["qualifies_present"]) {
+          $daysPresentDb += 1;
+        }
+
+        $rowDay = (int)$row["day_number"];
+        if ($firstRowDay === null || $rowDay < $firstRowDay) {
+          $firstRowDay = $rowDay;
+        }
+      }
+    }
+
+    if ($firstRowDay === null) {
+      $daysAbsentDb = 0;
+    } else {
+      $workingDays = 0;
+      for ($day = $firstRowDay; $day <= $currentDay; $day += 1) {
+        $date = new DateTimeImmutable("$currentYear-$currentMonth-$day", new DateTimeZone("Asia/Manila"));
+        $weekday = (int)$date->format("N");
+        if ($weekday >= 1 && $weekday <= 5) {
+          $workingDays += 1;
+        }
+      }
+
+      $daysAbsentDb = max(0, $workingDays - $daysPresentDb);
+    }
   } catch (PDOException $e) {
     $attendanceRows = [];
+    $daysPresentDb = 0;
+    $daysAbsentDb = 0;
   }
 }
 ?>
