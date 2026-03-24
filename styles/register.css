@@ -78,6 +78,23 @@ input::placeholder{
 color:#6f7a84;
 }
 
+input:focus,
+select:focus {
+  border: 1px solid #29b6f6;
+  box-shadow: 0 0 0 2px rgba(41, 182, 246, 0.25);
+}
+
+select{
+width:100%;
+padding:10px 12px;
+border:none;
+border-radius:8px;
+background:#0b0f14;
+color:#fff;
+outline:none;
+font-size:13px;
+}
+
 .password-field{
 position:relative;
 }

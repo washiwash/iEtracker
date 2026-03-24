@@ -71,20 +71,37 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
       <div class="card px-4 py-3">
         <?php if ($error !== ""): ?>
-          <div style="color: #b00020; margin-bottom: 12px;">
+          <div class="alert alert-danger" role="alert">
             <?= htmlspecialchars($error, ENT_QUOTES, "UTF-8") ?>
           </div>
         <?php endif; ?>
 
-        <form method="POST" action="" >
+        <form method="POST" action="">
           <label>Full Name</label>
           <input name="full_name" type="text" placeholder="e.g. John Doe" required />
 
           <label>Email Address</label>
-          <input name="email" type="email" placeholder="you@example.com" required />
+          <input name="email"  type="email" placeholder="you@example.com" required />
 
-          <label>Job Title</label>
-          <input name="job_title" type="text" placeholder="add job title" />
+          <label>Role/Position</label>
+          <select name="job_title" id="job_title"  required>
+            <option value="" disabled selected>Select your role</option>
+            <option value="Product Manager">Product Manager</option>
+             <option value="Designer">Designer</option>
+             <option value="Frontend Developer">Frontend Developer</option>
+             <option value="Backend Developer">Backend Developer</option>
+             <option value="FullStack Developer">Fullstack Developer</option>
+              <option value="QA Engineer">QA Engineer</option>
+              <option value="DevOps Engineer">DevOps Engineer</option>
+            <option value="Content Writer">Content Writer</option>
+              <option value="Marketing">Marketing</option>
+               <option value="Other">Other</option>
+
+
+         
+            <option value="Designer">Designer</option>
+            <!-- Add more job titles as needed -->
+          </select>
 
           <label>Password</label>
           <div class="password-field">
