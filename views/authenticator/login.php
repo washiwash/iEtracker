@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <span class="input-group-text">
               <i class="bi bi-envelope"></i>
             </span>
-            <input name="email" type="email" class="form-control" placeholder="you@example.com" required />
+            <input name="email" type="email" class="form-control" placeholder="you@example.com" maxlength="254" required />
           </div>
 
           <label class="form-label">Password</label>
@@ -101,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <span class="input-group-text">
               <i class="bi bi-lock"></i>
             </span>
-            <input id="password" name="password" type="password" class="form-control" placeholder="Enter your password" required />
+            <input id="password" name="password" type="password" class="form-control" placeholder="Enter your password" maxlength="128" required />
             <span class="password-btn input-group-text">
   <i class="password-eye bi bi-eye-slash-fill"></i>
 </span>

@@ -6,16 +6,19 @@ font-family:'Inter',sans-serif;
 }
 
 body{
-height:100vh;
+min-height:100vh;
 background:linear-gradient(180deg,#0a0f14,#06090d);
 display:flex;
 justify-content:center;
 align-items:center;
 color:#fff;
+padding:16px;
 }
 
 .container{
 text-align:center;
+width:100%;
+max-width:400px;
 }
 
 .logo{
@@ -47,9 +50,9 @@ margin-bottom:25px;
 }
 
 .card{
-width:360px;
+width:100%;
 background:#11161c;
-/* padding:28px; */
+padding:24px;
 border-radius:12px;
 box-shadow:0 0 20px rgba(0,0,0,0.6);
 text-align:left;
@@ -65,7 +68,7 @@ margin-top:12px;
 
 input{
 width:100%;
-padding:10px 12px;
+padding:12px;
 border:none;
 border-radius:8px;
 background:#0b0f14;
@@ -86,13 +89,14 @@ select:focus {
 
 select{
 width:100%;
-padding:10px 12px;
+padding:12px;
 border:none;
 border-radius:8px;
 background:#0b0f14;
 color:#fff;
 outline:none;
 font-size:13px;
+cursor:pointer;
 }
 
 .password-field{
@@ -101,7 +105,7 @@ position:relative;
 
 .password-field span{
 position:absolute;
-right:10px;
+right:12px;
 top:50%;
 transform:translateY(-50%);
 color:#6f7a84;
@@ -120,10 +124,15 @@ color:white;
 font-weight:500;
 cursor:pointer;
 transition:0.2s;
+font-size:14px;
 }
 
 button:hover{
 background:#2196b3;
+}
+
+button:active{
+background:#1a5f78;
 }
 
 .footer{
@@ -137,4 +146,186 @@ color:#8f9aa3;
 color:#29b6f6;
 text-decoration:none;
 font-weight:500;
+}
+
+/* Tablet styles (576px and up) */
+@media (min-width: 576px) {
+  .container {
+    max-width:420px;
+  }
+  
+  .title {
+    font-size:28px;
+  }
+  
+  .card {
+    padding:28px;
+  }
+}
+
+/* Larger tablet/desktop styles (768px and up) */
+@media (min-width: 768px) {
+  body {
+    padding:20px;
+  }
+  
+  .container {
+    max-width:400px;
+  }
+  
+  .title {
+    font-size:30px;
+  }
+  
+  .subtitle {
+    font-size:15px;
+  }
+  
+  label {
+    font-size:14px;
+  }
+  
+  input,
+  select {
+    font-size:14px;
+    padding:12px 14px;
+  }
+  
+  button {
+    font-size:15px;
+    padding:14px;
+  }
+}
+
+/* Laptop/Desktop styles (992px and up) */
+@media (min-width: 992px) {
+  body {
+    padding:30px;
+  }
+  
+  .container {
+    max-width:420px;
+  }
+  
+  .title {
+    font-size:32px;
+    margin-bottom:8px;
+  }
+  
+  .subtitle {
+    font-size:16px;
+    margin-bottom:30px;
+  }
+  
+  .card {
+    padding:32px;
+  }
+  
+  label {
+    font-size:14px;
+    margin-top:16px;
+    margin-bottom:8px;
+  }
+  
+  input,
+  select {
+    font-size:14px;
+    padding:13px 15px;
+  }
+  
+  button {
+    font-size:16px;
+    padding:14px;
+    margin-top:20px;
+  }
+  
+  .footer {
+    font-size:14px;
+  }
+}
+
+/* Large Desktop styles (1200px and up) */
+@media (min-width: 1200px) {
+  .container {
+    max-width:450px;
+  }
+  
+  .title {
+    font-size:34px;
+  }
+  
+  .subtitle {
+    font-size:17px;
+  }
+  
+  .card {
+    padding:36px;
+  }
+  
+  label {
+    font-size:15px;
+  }
+  
+  input,
+  select {
+    font-size:15px;
+    padding:14px 16px;
+  }
+  
+  button {
+    font-size:16px;
+    padding:15px;
+  }
+}
+
+/* Small height optimization (landscape mode or small desktop) */
+@media (max-height: 600px) {
+  body {
+    min-height:auto;
+    padding:12px;
+  }
+  
+  .logo {
+    width:50px;
+    height:50px;
+    font-size:22px;
+    margin-bottom:10px;
+  }
+  
+  .title {
+    font-size:20px;
+    margin-bottom:3px;
+  }
+  
+  .subtitle {
+    font-size:12px;
+    margin-bottom:15px;
+  }
+  
+  .card {
+    padding:16px;
+  }
+  
+  label {
+    font-size:12px;
+    margin-top:8px;
+    margin-bottom:4px;
+  }
+  
+  input,
+  select {
+    padding:8px 10px;
+    font-size:12px;
+  }
+  
+  button {
+    padding:10px;
+    margin-top:12px;
+    font-size:13px;
+  }
+  
+  .footer {
+    margin-top:12px;
+    font-size:12px;
+  }
 }

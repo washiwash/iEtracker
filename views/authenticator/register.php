@@ -13,13 +13,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
   if ($fullName === "" || $email === "" || $pass === "" || $confirm === "") {
     $error = "Please fill in all required fields.";
+  } elseif (!preg_match("/^[A-Za-z]+(\s[A-Za-z]+)*$/", $fullName)) {
+    $error = "Full name should contain only letters and single spaces between words.";
   } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $error = "Please enter a valid email address.";
-  } elseif ($pass !== $confirm) {
+  $error = "Please enter a valid email address.";
+} elseif (!in_array(substr(strrchr($email, "@"), 1), ["gmail.com", "yahoo.com", "outlook.com", "company.com"])) {
+  $error = "Email domain not allowed. Please use a company email or approved domain.";
+}
+  elseif ($pass !== $confirm) {
     $error = "Passwords do not match.";
   } elseif (strlen($pass) < 8) {
     $error = "Password must be at least 8 characters.";
-  } else {
+  }elseif (!preg_match("/[A-Z]/", $pass)) {
+    $error = "Password must contain at least one uppercase letter.";}
+    elseif (!preg_match("/[a-z]/", $pass)) {
+    $error = "Password must contain at least one lowercase letter.";}
+      elseif (!preg_match("/[0-9]/", $pass)) {
+    $error = "Password must contain at least one number.";}
+       elseif (!preg_match("/[\W_]/", $pass)) {
+    $error = "Password must contain at least one special character.";}
+
+   else {
     try {
       $hash = password_hash($pass, PASSWORD_DEFAULT);
 
@@ -78,14 +92,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <form method="POST" action="">
           <label>Full Name</label>
-          <input name="full_name" type="text" placeholder="e.g. John Doe" required />
-
+<input name="full_name" type="text" placeholder="e.g. John Doe" 
+       pattern="[A-Za-z]+(\s[A-Za-z]+)*" 
+       title="Full name should contain only letters and single spaces between words"
+       value="<?= htmlspecialchars($_POST["full_name"] ?? "", ENT_QUOTES, "UTF-8") ?>"
+      maxlength="70"
+       required />
           <label>Email Address</label>
-          <input name="email"  type="email" placeholder="you@example.com" required />
-
+          <input name="email"  type="email" placeholder="you@example.com"
+          value="<?= htmlspecialchars($_POST["email"] ?? "", ENT_QUOTES, "UTF-8") ?>" maxlength="254" required />
           <label>Role/Position</label>
           <select name="job_title" id="job_title"  required>
-            <option value="" disabled selected>Select your role</option>
+            <option value="" disabled selected>Choose your role</option>
             <option value="Product Manager">Product Manager</option>
              <option value="Designer">Designer</option>
              <option value="Frontend Developer">Frontend Developer</option>
@@ -96,28 +114,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <option value="Content Writer">Content Writer</option>
               <option value="Marketing">Marketing</option>
                <option value="Other">Other</option>
-
-
-         
             <option value="Designer">Designer</option>
             <!-- Add more job titles as needed -->
+         
           </select>
 
           <label>Password</label>
           <div class="password-field">
-            <input id="password" name="password" type="password" placeholder="Create a password" required />
+            <input id="password" name="password" type="password" placeholder="Create a password" maxlength="128"
+ required />
             <span class = "password-btn text-light" ><i class="password-eye bi bi-eye-slash-fill"></i></span>
-  
+          
           </div>
 
           <label>Confirm Password</label>
           <div class="password-field">
-            <input id="confirm_password" name="confirm_password" type="password" placeholder="Re-enter your password" required />
+            <input id="confirm_password" name="confirm_password" type="password" placeholder="Re-enter your password" maxlength="128" required />
           <span class = "confirm_password-btn text-light" ><i class="confirm_password-eye bi bi-eye-slash-fill"></i></span>
     
           </div>
 
-          <button type="submit">👤 Create Account</button>
+          <button type="submit"><i class="bi bi-person-add text-white"disabled></i> Create Account</button>
 
           <div class="footer">
             Already have an account? <a href="login.php">Sign In</a>
