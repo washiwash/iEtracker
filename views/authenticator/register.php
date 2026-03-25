@@ -134,6 +134,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     
           </div>
 
+         <div class="form-check mb-3 mx-1">
+  <input type="checkbox" class="form-check-input" id="terms" name="terms" required />
+  <label class="form-check-label" for="terms">I agree to the <a href="../legal/terms.php" class = "text-decoration-none text-info">Terms of Service</a> and <a href="../legal/privacy.php" class="text-decoration-none text-info">Privacy Policy</a>.</label>
+</div>
+
           <button type="submit"><i class="bi bi-person-add text-white"disabled></i> Create Account</button>
 
           <div class="footer">

@@ -66,7 +66,10 @@ margin-bottom:6px;
 margin-top:12px;
 }
 
-input{
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
 width:100%;
 padding:12px;
 border:none;
@@ -185,8 +188,10 @@ font-weight:500;
     font-size:14px;
   }
   
-  input,
-  select {
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
     font-size:14px;
     padding:12px 14px;
   }
@@ -227,8 +232,10 @@ font-weight:500;
     margin-bottom:8px;
   }
   
-  input,
-  select {
+ input[type="text"],
+input[type="email"],
+input[type="password"],
+select{
     font-size:14px;
     padding:13px 15px;
   }
@@ -242,6 +249,39 @@ font-weight:500;
   .footer {
     font-size:14px;
   }
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+    font-size:15px;
+    padding:14px 16px;
+  }
+  
+  button {
+    font-size:16px;
+    padding:15px;
+  }
+
+
+input[type="checkbox"] {
+  background-color: transparent;
+  border: 2px solid #23323a;  
+  padding: 7px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #1f7a94;
+  border: 2px solid #1f7a94;
+}
+
+input[type="checkbox"]:hover {
+  border: 2px solid #ffffff;
+  transform: scale(1.1); 
+
 }
 
 /* Large Desktop styles (1200px and up) */
@@ -266,17 +306,10 @@ font-weight:500;
     font-size:15px;
   }
   
-  input,
-  select {
-    font-size:15px;
-    padding:14px 16px;
-  }
-  
-  button {
-    font-size:16px;
-    padding:15px;
-  }
 }
+
+
+
 
 /* Small height optimization (landscape mode or small desktop) */
 @media (max-height: 600px) {
@@ -312,8 +345,10 @@ font-weight:500;
     margin-bottom:4px;
   }
   
-  input,
-  select {
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
     padding:8px 10px;
     font-size:12px;
   }
