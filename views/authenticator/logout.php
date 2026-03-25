@@ -6,7 +6,6 @@ session_start();
 // Clear all session data
 $_SESSION = [];
 
-// Remove session cookie (if used)
 if (ini_get("session.use_cookies")) {
   $params = session_get_cookie_params();
   setcookie(

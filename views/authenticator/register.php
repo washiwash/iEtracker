@@ -4,6 +4,7 @@ declare(strict_types=1);
 $pdo = require __DIR__ . "/../../database/ietracker_database.php";
 
 $error = "";
+$success = false;
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $fullName = trim($_POST["full_name"] ?? "");
   $email    = trim($_POST["email"] ?? "");
@@ -42,10 +43,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       );
       $stmt->execute([$fullName, $email, $jobTitle, "user", $hash]);
 
-      header("Location: login.php?registered=1");
-      exit;
+      $success = true;
     } catch (PDOException $e) {
-      // Duplicate email usually ends up as SQLSTATE 23000 (integrity constraint)
       if (($e->getCode() ?? "") === "23000") {
         $error = "That email is already registered.";
       } else {
@@ -90,6 +89,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
           </div>
         <?php endif; ?>
 
+        <!-- Success Modal -->
+        <?php if ($success): ?>
+        <div class="success-modal-overlay" id="successModal">
+          <div class="success-modal">
+            <div class="success-icon">
+              <i class="bi bi-check-circle"></i>
+            </div>
+            <h2>Registration Successful!</h2>
+            <p>Your account has been created successfully.</p>
+            <p class="redirect-message">Redirecting to login in <span id="countdown">5</span> seconds...</p>
+          </div>
+        </div>
+        <?php endif; ?>
+
         <form method="POST" action="">
           <label>Full Name</label>
 <input name="full_name" type="text" placeholder="e.g. John Doe" 
@@ -98,9 +111,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
        value="<?= htmlspecialchars($_POST["full_name"] ?? "", ENT_QUOTES, "UTF-8") ?>"
       maxlength="70"
        required />
+<div class="validation-error" id="fullNameError"></div>
           <label>Email Address</label>
           <input name="email"  type="email" placeholder="you@example.com"
           value="<?= htmlspecialchars($_POST["email"] ?? "", ENT_QUOTES, "UTF-8") ?>" maxlength="254" required />
+<div class="validation-error" id="emailError"></div>
           <label>Role/Position</label>
           <select name="job_title" id="job_title"  required>
             <option value="" disabled selected>Choose your role</option>
@@ -115,9 +130,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
               <option value="Marketing">Marketing</option>
                <option value="Other">Other</option>
             <option value="Designer">Designer</option>
-            <!-- Add more job titles as needed -->
          
           </select>
+<div class="validation-error" id="jobTitleError"></div>
 
           <label>Password</label>
           <div class="password-field">
@@ -126,6 +141,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <span class = "password-btn text-light" ><i class="password-eye bi bi-eye-slash-fill"></i></span>
           
           </div>
+          <div class="password-requirements">
+            <div class="requirement" id="req-length">
+              <i class="bi bi-x-circle req-icon"></i>
+              <span>8+ characters</span>
+            </div>
+            <div class="requirement" id="req-uppercase">
+              <i class="bi bi-x-circle req-icon"></i>
+              <span>Uppercase</span>
+            </div>
+            <div class="requirement" id="req-lowercase">
+              <i class="bi bi-x-circle req-icon"></i>
+              <span>Lowercase</span>
+            </div>
+            <div class="requirement" id="req-number">
+              <i class="bi bi-x-circle req-icon"></i>
+              <span>Number</span>
+            </div>
+            <div class="requirement" id="req-special">
+              <i class="bi bi-x-circle req-icon"></i>
+              <span>Special char</span>
+            </div>
+          </div>
+<div class="validation-error" id="passwordError"></div>
 
           <label>Confirm Password</label>
           <div class="password-field">
@@ -133,13 +171,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
           <span class = "confirm_password-btn text-light" ><i class="confirm_password-eye bi bi-eye-slash-fill"></i></span>
     
           </div>
+<div class="validation-error" id="confirmPasswordError"></div>
 
          <div class="form-check mb-3 mx-1">
   <input type="checkbox" class="form-check-input" id="terms" name="terms" required />
   <label class="form-check-label" for="terms">I agree to the <a href="../legal/terms.php" class = "text-decoration-none text-info">Terms of Service</a> and <a href="../legal/privacy.php" class="text-decoration-none text-info">Privacy Policy</a>.</label>
 </div>
+<div class="validation-error" id="termsError"></div>
 
-          <button type="submit"><i class="bi bi-person-add text-white"disabled></i> Create Account</button>
+<button type="submit" disabled><i class="bi bi-person-add text-white"></i> Create Account</button>
+<hr class="border border-primary border-1 opacity-55 w-65 text-center mx-auto my-4" />
 
           <div class="footer">
             Already have an account? <a href="login.php">Sign In</a>
@@ -152,6 +193,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
   crossorigin="anonymous"></script>
   <script src="../../scripts/authentication.js"></script>
+  <script>
+    // Success modal countdown
+    <?php if ($success): ?>
+    document.addEventListener('DOMContentLoaded', () => {
+      let secondsLeft = 5;
+      const countdownElement = document.getElementById('countdown');
+      
+      const countdown = setInterval(() => {
+        secondsLeft--;
+        countdownElement.textContent = secondsLeft;
+        
+        if (secondsLeft <= 0) {
+          clearInterval(countdown);
+          window.location.href = 'login.php?registered=1';
+        }
+      }, 1000);
+    });
+    <?php endif; ?>
+  </script>
   
   </body>
 </html>

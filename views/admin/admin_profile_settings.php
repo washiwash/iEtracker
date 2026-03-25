@@ -102,10 +102,7 @@ if ($initials === "") $initials = "U";
           href="./admin_user_management.php"
           class="nav-link d-flex align-items-center gap-3">
           <i class="bi bi-check2-square"></i> User Management
-        </a>
-        <!-- <a href="../users/attendance.php" class="nav-link d-flex align-items-center gap-3">
-          <i class="bi bi-person"></i> My Attendance
-        </a> -->
+        </a>  
         <a href="./admin_profile_settings.php" class="nav-link active d-flex align-items-center text-info gap-3">
           <i class="bi bi-gear"></i> Profile Settings
         </a>

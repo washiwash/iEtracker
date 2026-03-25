@@ -114,6 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
           <button class="signin-btn" type="submit">
             <i class="bi bi-box-arrow-in-right"></i> Sign In
           </button>
+<hr class="border border-primary border-1 opacity-55 w-65 text-center mx-auto my-4" />
 
           <div class="bottom-text">
             Don't have an account?
