@@ -183,7 +183,7 @@ if ($initials === "") $initials = "U";
           </div>
 
           <div class="profile-actions">
-            <button type="submit" class="profile-save-btn">
+            <button type="submit" class="profile-save-btn" disabled>
               <i class="bi bi-floppy"></i>
               <span>Save Changes</span>
             </button>

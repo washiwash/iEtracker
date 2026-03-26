@@ -183,9 +183,12 @@ require __DIR__ . "/../partials/navbar.php";
                   type="text"
                   name="full_name"
                   value="<?= htmlspecialchars($fullName, ENT_QUOTES, "UTF-8") ?>"
+                  maxlength="70"
                   required />
               </span>
             </label>
+
+<div class="validation-error" id="fullNameError"></div>
 
             <label class="profile-field">
               <span class="profile-label">Email Address</span>
@@ -198,6 +201,7 @@ require __DIR__ . "/../partials/navbar.php";
                   required />
               </span>
             </label>
+            <div class="validation-error" id="emailError"></div>
 
             <!-- <label class="profile-field">
               <span class="profile-label">Username</span>
@@ -209,7 +213,7 @@ require __DIR__ . "/../partials/navbar.php";
           </div>
 
           <div class="profile-actions">
-            <button type="submit" class="profile-save-btn">
+            <button type="submit" class="profile-save-btn" disabled>
               <i class="bi bi-floppy"></i>
               <span>Save Changes</span>
             </button>

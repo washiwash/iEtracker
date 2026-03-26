@@ -22,6 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $error = "New passwords do not match.";
   } elseif (strlen($newPass) < 8) {
     $error = "New password must be at least 8 characters.";
+  } elseif ($currentPass === $newPass) {
+    $error = "New password must be different from current password.";
   } else {
     $stmt = $pdo->prepare("SELECT password_hash FROM users WHERE id = ? LIMIT 1");
     $stmt->execute([(int)$_SESSION["user_id"]]);
@@ -167,11 +169,22 @@ $basePath = "../../";
         <section class="profile-form-card" aria-label="Personal information">
           <h3 class="profile-form-title">Change Password</h3>
 
-          <?php if ($success !== ""): ?>
-            <div class="alert alert-success py-2"><?= htmlspecialchars($success, ENT_QUOTES, "UTF-8") ?></div>
-          <?php endif; ?>
           <?php if ($error !== ""): ?>
             <div class="alert alert-danger py-2"><?= htmlspecialchars($error, ENT_QUOTES, "UTF-8") ?></div>
+          <?php endif; ?>
+
+          <!-- Success Modal -->
+          <?php if ($success !== ""): ?>
+          <div class="success-modal-overlay" id="successModal">
+            <div class="success-modal">
+              <div class="success-icon">
+                <i class="bi bi-check-circle"></i>
+              </div>
+              <h2>Password Changed Successfully!</h2>
+              <p>Your password has been updated.</p>
+              <p class="redirect-message">You will be logged out in <span id="countdown">5</span> seconds for security...</p>
+            </div>
+          </div>
           <?php endif; ?>
 
           <form method="POST" action="">
@@ -181,25 +194,53 @@ $basePath = "../../";
               <span class="profile-label">Current Password</span>
               <span class="profile-input-wrap">
                 <i class="bi bi-lock"></i>
-                <input type="password" name="current_password" placeholder="Enter current password" required />
+                <input type="password" id="password" name="current_password" placeholder="Enter current password" required />
+            <span class = "password-btn text-light" ><i class="password-eye bi bi-eye-slash-fill"></i></span>
               </span>
             </label>
+            <div class="validation-error" id="currentPasswordError"></div>
 
             <label class="profile-field">
               <span class="profile-label">New Password</span>
               <span class="profile-input-wrap">
                 <i class="bi bi-lock"></i>
-                <input type="password" name="new_password" placeholder="Enter new password" required />
+                <input type="password" id="new_password" name="new_password" placeholder="Enter new password" required />
+                <span class = "new_password-btn text-light"><i class="new_password-eye bi bi-eye-slash-fill"></i></span>
               </span>
             </label>
+            <div class="validation-error" id="newPasswordError"></div>
+            <div class="password-requirements">
+              <div class="requirement" id="req-length">
+                <i class="bi bi-x-circle req-icon"></i>
+                <span>8+ characters</span>
+              </div>
+              <div class="requirement" id="req-uppercase">
+                <i class="bi bi-x-circle req-icon"></i>
+                <span>Uppercase</span>
+              </div>
+              <div class="requirement" id="req-lowercase">
+                <i class="bi bi-x-circle req-icon"></i>
+                <span>Lowercase</span>
+              </div>
+              <div class="requirement" id="req-number">
+                <i class="bi bi-x-circle req-icon"></i>
+                <span>Number</span>
+              </div>
+              <div class="requirement" id="req-special">
+                <i class="bi bi-x-circle req-icon"></i>
+                <span>Special char</span>
+              </div>
+            </div>
 
             <label class="profile-field">
               <span class="profile-label">Confirm Password</span>
               <span class="profile-input-wrap">
                 <i class="bi bi-lock"></i>
-                <input type="password" name="confirm_password" placeholder="Confirm new password" required />
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm new password" required />
+                <span class="confirm_password-btn text-light"><i class="confirm_password-eye bi bi-eye-slash-fill"></i></span>
               </span>
             </label>
+            <div class="validation-error" id="confirmPasswordError"></div>
 
             <!-- <label class="profile-field">
               <span class="profile-label">Username</span>
@@ -211,7 +252,7 @@ $basePath = "../../";
           </div>
 
           <div class="profile-actions">
-            <button type="submit" class="profile-save-btn">
+            <button type="submit" class="profile-save-btn" disabled>
               <i class="bi bi-floppy"></i>
               <span>Save Changes</span>
             </button>
@@ -228,5 +269,24 @@ $basePath = "../../";
   src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
   crossorigin="anonymous"></script>
+  <script>
+    // Success modal countdown and logout
+    <?php if ($success !== ""): ?>
+    document.addEventListener('DOMContentLoaded', () => {
+      let secondsLeft = 5;
+      const countdownElement = document.getElementById('countdown');
+      
+      const countdown = setInterval(() => {
+        secondsLeft--;
+        countdownElement.textContent = secondsLeft;
+        
+        if (secondsLeft <= 0) {
+          clearInterval(countdown);
+          window.location.href = '../../views/authenticator/logout.php';
+        }
+      }, 1000);
+    });
+    <?php endif; ?>
+  </script>
   </body>
 </html>
